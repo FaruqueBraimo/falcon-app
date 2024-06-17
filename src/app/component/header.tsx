@@ -1,19 +1,9 @@
 "use client";
 
-import {
-  Box,
-  Flex,
-  useBreakpointValue,
-  Button,
-  Input,
-  InputGroup,
-  InputRightAddon,
-  InputLeftElement,
-  Text,
-} from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { Box, Flex, Button, Text } from "@chakra-ui/react";
+import Search from "./header/search";
 
-export default function Header() {
+export default function Header({ onSearch }: any) {
   return (
     <Flex
       as="header"
@@ -28,21 +18,7 @@ export default function Header() {
         <Text as="b">Falcon</Text>
       </Box>
 
-      <Box flex="2" m={{ base: "1rem 0", md: "0 10rem" }}>
-        <Flex align="center">
-          <InputGroup size={{ base: "sm", md: "md" }}>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray.300" />
-            </InputLeftElement>
-            <Input placeholder="Type your destination..." variant="filled" />
-            <InputRightAddon width="5.rem" bg="black">
-              <Button size="md" w="100%" colorScheme="black">
-                Search
-              </Button>
-            </InputRightAddon>
-          </InputGroup>
-        </Flex>
-      </Box>
+      <Search onSearch={onSearch} />
 
       <Box>
         <Button

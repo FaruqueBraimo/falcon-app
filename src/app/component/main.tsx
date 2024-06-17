@@ -1,12 +1,12 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import Economy from "./main/economy";
 
-export default function Main() {
+export default function Main({ economyInsight }: any) {
   return (
     <Fragment>
-      <Economy />
+      <Economy data={economyInsight} />
     </Fragment>
   );
 }
