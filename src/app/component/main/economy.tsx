@@ -1,30 +1,37 @@
 "use client";
 
-import { Box, Flex, Text, SimpleGrid, Spacer } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  SimpleGrid,
+  Tag,
+  StackDivider,
+  VStack,
+} from "@chakra-ui/react";
 import { Fragment } from "react";
 
-export default function Economy({ data }: any) {
+export default function Economy({ economyInsight }: any) {
   return (
     <Fragment>
-      {Object.keys(data).length !== 0 ? (
-        <Flex direction="column" p="1rem" py="3rem" px="5rem">
-          <SimpleGrid
-            columns={{ base: 1, md: 2 }}
-            gap="1rem"
-            spacing="2rem"
-            width="100%"
+      {Object.keys(economyInsight).length !== 0 ? (
+        <Box
+          padding="1.5rem"
+          borderWidth="1px"
+          boxShadow="sm"
+          bg="white"
+          overflow="hidden"
+        >
+          <VStack
+            divider={<StackDivider borderColor="gray.200" />}
+            spacing={4}
+            align="stretch"
           >
-            <Box
-              padding="1.5rem"
-              borderWidth="1px"
-              boxShadow="sm"
-              bg="white"
-              overflow="hidden"
-            >
+            <Box>
               <Flex gap="1">
                 <Box>
                   <Text as="h2" fontSize={{ base: "sm", md: "md" }} mb="1rem">
-                    {data.country}
+                    {economyInsight.country}
                   </Text>
                 </Box>
                 <Box px="1">/</Box>
@@ -35,21 +42,14 @@ export default function Economy({ data }: any) {
                 </Box>
               </Flex>
               <Box>
-                {data.population} ({data.year})
+                {economyInsight.population} ({economyInsight.year})
               </Box>
             </Box>
-
-            <Box
-              padding="1.5rem"
-              borderWidth="1px"
-              boxShadow="sm"
-              bg="white"
-              overflow="hidden"
-            >
+            <Box>
               <Flex gap="1">
                 <Box>
                   <Text as="h2" fontSize={{ base: "sm", md: "md" }} mb="1rem">
-                    {data.country}
+                    {economyInsight.country}
                   </Text>
                 </Box>
                 <Box px="1">/</Box>
@@ -60,13 +60,13 @@ export default function Economy({ data }: any) {
                 </Box>
               </Flex>
               <Box>
-                {data.gdp} USD ({data.year})
+                {economyInsight.gdp} USD ({economyInsight.year})
               </Box>
             </Box>
-          </SimpleGrid>
-        </Flex>
+          </VStack>
+        </Box>
       ) : (
-        <Box> </Box>
+        <Box></Box>
       )}
     </Fragment>
   );

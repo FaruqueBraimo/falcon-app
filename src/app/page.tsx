@@ -8,16 +8,18 @@ import { getInsights } from "./actions/insight";
 
 export default function Home() {
   const [economyInsight, setEconomyInsight] = useState({});
+  const [exchangeRate, setExchangeRate] = useState({});
 
   async function onSearch(city: string) {
-    const { economyInsight } = await getInsights(city);
+    const { economyInsight, exchangeRate } = await getInsights(city);
     setEconomyInsight(economyInsight);
+    setExchangeRate(exchangeRate);
   }
 
   return (
     <Fragment>
       <Header onSearch={onSearch} />
-      <Main economyInsight={economyInsight} />
+      <Main economyInsight={economyInsight} exchangeRate={exchangeRate} />
     </Fragment>
   );
 }
