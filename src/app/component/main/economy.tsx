@@ -1,14 +1,7 @@
 "use client";
 
-import {
-  Box,
-  Flex,
-  Text,
-  SimpleGrid,
-  Tag,
-  StackDivider,
-  VStack,
-} from "@chakra-ui/react";
+import { getExtensionAmount } from "@/app/actions/util";
+import { Box, Flex, Text, StackDivider, VStack } from "@chakra-ui/react";
 import { Fragment } from "react";
 
 export default function Economy({ economyInsight }: any) {
@@ -42,7 +35,8 @@ export default function Economy({ economyInsight }: any) {
                 </Box>
               </Flex>
               <Box>
-                {economyInsight.population} ({economyInsight.year})
+                {getExtensionAmount(economyInsight.population)} (
+                {economyInsight.year})
               </Box>
             </Box>
             <Box>
@@ -60,7 +54,8 @@ export default function Economy({ economyInsight }: any) {
                 </Box>
               </Flex>
               <Box>
-                {economyInsight.gdp} USD ({economyInsight.year})
+                {getExtensionAmount(economyInsight.gdp)} USD (
+                {economyInsight.year})
               </Box>
             </Box>
           </VStack>

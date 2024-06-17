@@ -15,7 +15,9 @@ export default function Exchange({ exchangeRate, country }: any) {
   const isDataReady = Object.keys(exchangeRate || {}).length !== 0;
 
   const currency = isDataReady ? `${Object.keys(exchangeRate.rates)[0]}` : "";
-  const value = isDataReady ? ` ${Object.values(exchangeRate.rates)[0]}` : "";
+  const value = isDataReady
+    ? ` ${Number(Object.values(exchangeRate.rates)[0]).toFixed(2)}`
+    : "";
 
   return (
     <Fragment>
@@ -35,21 +37,19 @@ export default function Exchange({ exchangeRate, country }: any) {
             <Box>
               <Flex gap="1">
                 <Box>
-                  <Text as="h2" fontSize={{ base: "sm", md: "md" }} mb="1rem">
+                  <Text as="h2" fontSize={{ base: "sm", md: "md" }} mb="0.rem">
                     {country}
                   </Text>
                 </Box>
                 <Box px="1">/</Box>
                 <Box>
-                  <Text as="b" fontSize={{ base: "sm", md: "md" }} mb="1rem">
+                  <Text as="b" fontSize={{ base: "sm", md: "md" }}>
                     Exchange rate
                   </Text>
                 </Box>
               </Flex>
               <Box>
-                <Text as="b" fontSize={{ base: "sm", md: "md" }} mb="1rem">
-                  1 {exchangeRate.base} equals to {value} {currency}
-                </Text>
+                1 {exchangeRate.base} equals to {value} {currency}
               </Box>
               <Box pt="0.5rem">
                 <Text as="sup" color="grey">

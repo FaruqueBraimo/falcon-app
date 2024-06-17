@@ -43,6 +43,9 @@ export default function Search({ onSearch }: any) {
             onChange={(e: any) => {
               setCity(e.target.value);
             }}
+            onKeyDown={(e: any) => {
+              e.key === "Enter" ? handleSearch() : null;
+            }}
             variant="filled"
           />
           <InputRightAddon width="5.rem" bg="black">
