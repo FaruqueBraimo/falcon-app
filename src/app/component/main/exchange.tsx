@@ -49,7 +49,9 @@ export default function Exchange({ exchangeRate, country }: any) {
                 </Box>
               </Flex>
               <Box>
-                1 {exchangeRate.base} equals to {value} {currency}
+                {exchangeRate.base === currency
+                  ? `1 ${exchangeRate.base}`
+                  : `1 ${exchangeRate.base} equals to ${value} ${currency} `}
               </Box>
               <Box pt="0.5rem">
                 <Text as="sup" color="grey">

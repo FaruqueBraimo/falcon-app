@@ -40,7 +40,7 @@ export default function Main({
 
       <Flex direction="column" pb="1rem" px={{ base: "3rem", md: "17rem" }}>
         <Box pt="1rem" pb="0.3rem">
-          <Tag>Wheather Forecast</Tag>
+          <Tag>Weather Forecast</Tag>
         </Box>
         <Box
           w="100%"

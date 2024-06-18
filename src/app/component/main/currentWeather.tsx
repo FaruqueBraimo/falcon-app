@@ -51,7 +51,7 @@ export default function currentWeather({ current }: any) {
                     <Text as="sup">Pressure: {current.pressure}</Text>
                   </Box>
                   <Box>
-                    <Text as="sup">Wind: {current.wind_speed}</Text>
+                    <Text as="sup">Wind: {current.wind_speed} km/h</Text>
                   </Box>
                 </SimpleGrid>
               </Box>
@@ -64,7 +64,7 @@ export default function currentWeather({ current }: any) {
                 Weather
               </Text>
               <Text color="black" fontSize={{ base: "sm", md: "md" }}>
-                {getDayTime(current.dt)}
+                {getDayTime(current.dt)} (Last Update)
               </Text>
               <Text color="black" fontSize={{ base: "sm", md: "md" }}>
                 {current.summary || "Enjoy!"}

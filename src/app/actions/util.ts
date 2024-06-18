@@ -1,4 +1,5 @@
 import moment from "moment";
+import { FaCloudMoon } from "react-icons/fa";
 
 const weekday = [
   "Sunday",
@@ -14,11 +15,12 @@ const million = 1000000;
 const billion = 1000000000;
 const trillion = 1000000000000;
 
-const getDayTime = (date: string) => {
-  const now = moment(date, "HH:mm").toDate();
-  getExtensionAmount("100");
-  return `${weekday[now.getDay()]} ${now.getHours()}:${now.getMinutes()}`;
-};
+// let weatherIcon = new Map<string, any>([
+//   ["clear", ""],
+//   ["key2", <FaCloudMoon />],
+// ]);
+
+function getWeatherIcone() {}
 
 const getExtensionAmount = (value: string) => {
   const currentValue = Number(value);
@@ -32,4 +34,23 @@ const getExtensionAmount = (value: string) => {
   return currentValue.toString();
 };
 
-export { getDayTime, getExtensionAmount };
+const getDayTime = (date: string) => {
+  var now = new Date(Number(date) * 1000);
+  return `${weekday[now.getDay()]} ${now.getHours()}:${now.getMinutes()}`;
+};
+
+const getDay = (date: string) => {
+  var now = new Date(Number(date) * 1000);
+  return `${weekday[now.getDay()]}`;
+};
+
+const getTime = (date: string) => {
+  var now = new Date(Number(date) * 1000);
+  return `${now.getHours()}:${now.getMinutes()}`;
+};
+
+const getDate = (date: string) => {
+  var now = new Date(Number(date) * 1000);
+  return `${now.toLocaleDateString("en-US")}`;
+};
+export { getDayTime, getExtensionAmount, getDate, getTime, getDay };
