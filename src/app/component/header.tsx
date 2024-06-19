@@ -1,9 +1,13 @@
 "use client";
 
-import { Box, Flex, Button, Text } from "@chakra-ui/react";
+import { Box, Flex, Button, Text, useDisclosure } from "@chakra-ui/react";
 import Search from "./header/search";
+import Login from "./main/auth/login";
+import { useContext, useEffect } from "react";
 
-export default function Header({ onSearch }: any) {
+export default function Header({ onSearch, onLogin, isAuthenticated }: any) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Flex
       as="header"
@@ -21,15 +25,19 @@ export default function Header({ onSearch }: any) {
       <Search onSearch={onSearch} />
 
       <Box>
-        <Button
-          variant="outline"
-          colorScheme="black"
-          ml={{ base: 0, md: "1rem" }}
-          size={{ base: "sm", md: "md" }}
-        >
-          Login
-        </Button>
+        {!isAuthenticated && (
+          <Button
+            variant="outline"
+            colorScheme="black"
+            ml={{ base: 0, md: "1rem" }}
+            size={{ base: "sm", md: "md" }}
+            onClick={onOpen}
+          >
+            Login
+          </Button>
+        )}
       </Box>
+      <Login isOpen={isOpen} onClose={onClose} onLogin={onLogin}></Login>
     </Flex>
   );
 }

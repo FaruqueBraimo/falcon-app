@@ -22,7 +22,7 @@ import DaylyWeather from "./dailyWeather";
 export default function Wheather({ weatherForecast }: any) {
   const isDataReady = Object.keys(weatherForecast || {}).length !== 0;
   const dayForecast = isDataReady
-    ? Object.keys(weatherForecast.forecast.daily).length
+    ? Object.keys(weatherForecast?.forecast?.daily).length
     : 0;
 
   return (
