@@ -13,7 +13,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-export default function Search({ onSearch }: any) {
+export default function Search({ onSearch, isSeaching }: any) {
   const [city, setCity] = useState("");
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -54,6 +54,7 @@ export default function Search({ onSearch }: any) {
               w="100%"
               colorScheme="black"
               onClick={() => handleSearch()}
+              disabled={isSeaching}
             >
               Search
             </Button>

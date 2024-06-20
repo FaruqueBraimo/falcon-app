@@ -2,10 +2,8 @@ import { createContext, useEffect, useState } from "react";
 import { setCookie, parseCookies } from "nookies";
 import { signIn, signUp } from "../actions/auth";
 import { redirect } from "next/navigation";
-
-type User = {
-  name: string;
-};
+import { isValid } from "../actions/util";
+import { useToast } from "@chakra-ui/react";
 
 type registrationRequest = {
   username: string;
@@ -22,27 +20,55 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: any) {
   const [isAuthenticated, setAutenticated] = useState<boolean | null>(false);
+  const toast = useToast();
 
   async function login({ username, password }: registrationRequest) {
-    const { token }: any = await signIn({
+    const { token, error }: any = await signIn({
       username,
       password,
     });
 
-    setCookie(undefined, "falcon.token", token, {
-      maxAge: 60 * 60 * 1,
-    });
+    if (isValid(error)) {
+      toast({
+        title: "Invalid Credentials!",
+        status: "error",
+        isClosable: true,
+        position: "top",
+      });
+    } else {
+      setCookie(undefined, "falcon.token", token, {
+        maxAge: 60 * 60 * 1,
+      });
 
-    if (token !== "" && token !== null && token !== undefined) {
-      window.location.href = "/";
+      if (token !== "" && token !== null && token !== undefined) {
+        window.location.href = "/";
+      }
     }
   }
 
   async function register({ username, password }: registrationRequest) {
-    await signUp({
+    const { error }: any = await signUp({
       username,
       password,
     });
+
+    if (isValid(error)) {
+      toast({
+        title: error,
+        status: "error",
+        isClosable: true,
+        position: "top",
+      });
+    } else {
+      toast({
+        title: "Account created.",
+        description: "We've created your account for you.",
+        status: "success",
+        isClosable: true,
+      });
+
+      login({ username, password });
+    }
   }
 
   return (

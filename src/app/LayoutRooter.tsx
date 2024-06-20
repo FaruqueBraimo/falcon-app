@@ -10,22 +10,24 @@ import { parseCookies } from "nookies";
 import {
   Box,
   Center,
-  SkeletonCircle,
+  Flex,
   SkeletonText,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { ToastContainer } from "react-toastify";
-import { createRoot } from "react-dom/client";
+import MapComponent from "./component/map";
+import { isValid } from "./actions/util";
 
 export default function LayoutRooter() {
   const [economyInsight, setEconomyInsight] = useState({});
   const [exchangeRate, setExchangeRate] = useState({});
-  const [weatherForecast, setWeatherForecast] = useState({});
+  const [weatherForecast, setWeatherForecast]: any = useState({});
   const [metadata, setMetada] = useState({});
   const [isAuthenticated, setAutenticated] = useState(false);
   const [isSeaching, setIsSearching] = useState(false);
   const [isDataReady, setDataReady] = useState(false);
   const [city, setCity] = useState("");
+  const toast = useToast();
 
   const { login, register } = useContext(AuthContext);
 
@@ -53,13 +55,23 @@ export default function LayoutRooter() {
     setExchangeRate({});
     setWeatherForecast({});
     setCity(city);
-    const { economyInsight, exchangeRate, weatherForecast, metadata } =
+    const { economyInsight, exchangeRate, weatherForecast, metadata, error } =
       await getInsights({ city, isAuthenticated });
 
-    setEconomyInsight(economyInsight);
-    setExchangeRate(exchangeRate);
-    setWeatherForecast(weatherForecast);
-    setMetada(metadata)
+    if (!isValid(error)) {
+      setEconomyInsight(economyInsight);
+      setExchangeRate(exchangeRate);
+      setWeatherForecast(weatherForecast);
+      setMetada(metadata);
+    } else {
+      toast({
+        title: error,
+        status: "error",
+        isClosable: true,
+        position: "top",
+      });
+    }
+
     setIsSearching(false);
   }
 
@@ -85,25 +97,42 @@ export default function LayoutRooter() {
         onSearch={onSearch}
         onLogin={onLogin}
         isAuthenticated={isAuthenticated}
+        isSeaching={isSeaching}
       />
       {isSeaching && (
-        <Box padding="6" bg="white">
-          <SkeletonCircle size="10" />
-          <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="2" />
-        </Box>
+        <Flex direction="column" pb="1rem" px={{ base: "3rem", md: "17rem" }}>
+          <Box padding="6" bg="white">
+            <SkeletonText
+              mt="4"
+              noOfLines={4}
+              spacing="4"
+              skeletonHeight="10"
+            />
+
+            <SkeletonText
+              mt="4"
+              noOfLines={4}
+              spacing="4"
+              skeletonHeight="10"
+            />
+          </Box>
+        </Flex>
       )}
 
       {isDataReady ? (
-        <Main
-          economyInsight={economyInsight}
-          exchangeRate={exchangeRate}
-          isAuthenticated={isAuthenticated}
-          weatherForecast={weatherForecast}
-          onRegister={onRegister}
-          city={city}
-          isSeaching={isSeaching}
-          metadata={metadata}
-        />
+        <>
+          <Main
+            economyInsight={economyInsight}
+            exchangeRate={exchangeRate}
+            isAuthenticated={isAuthenticated}
+            weatherForecast={weatherForecast}
+            onRegister={onRegister}
+            city={city}
+            isSeaching={isSeaching}
+            metadata={metadata}
+          />
+          <MapComponent location={weatherForecast?.forecast?.location} />
+        </>
       ) : (
         <Center h={{ base: "20px", md: "100px" }} color="black">
           {!isSeaching && (
@@ -113,7 +142,6 @@ export default function LayoutRooter() {
           )}
         </Center>
       )}
-      <ToastContainer />
     </Fragment>
   );
 }

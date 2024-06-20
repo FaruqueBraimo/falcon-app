@@ -7,7 +7,7 @@ import { Fragment } from "react";
 export default function Economy({ economyInsight }: any) {
   return (
     <Fragment>
-      {Object.keys(economyInsight).length !== 0 ? (
+      {Object.keys(economyInsight)?.length !== 0 ? (
         <Box
           padding="1.5rem"
           borderWidth="1px"

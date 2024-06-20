@@ -10,9 +10,16 @@ async function signIn({ username, password }: any) {
       body: JSON.stringify({ username: username, password: password }),
     });
 
-    return res.json();
+    const data = await res.json();
+
+    if (data?.status) {
+      return {
+        error: data?.message,
+      };
+    }
+    return data;
   } catch (error) {
-    alert("error");
+    return { error: error };
   }
 }
 
@@ -25,10 +32,20 @@ async function signUp({ username, password }: any) {
       },
       body: JSON.stringify({ username: username, password: password }),
     });
-    alert("Success. Use your credentials to login");
-    window.location.href = "/";
+
+    if (!res.ok) {
+      const data = await res.json();
+
+      if (data?.status) {
+        return {
+          error: data?.message,
+        };
+      }
+    }
+    return {};
   } catch (error) {
-    alert("error");
+    console.log(error);
+    return { error: "error" };
   }
 }
 

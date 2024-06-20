@@ -17,31 +17,15 @@ import {
   TabPanels,
   Tabs,
   Tag,
-  VStack,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import Exchange from "./main/exchange";
 import Wheather from "./main/weather";
 import { getHistoricalInsights } from "../actions/insight";
-import { createRoot } from "react-dom/client";
 import Chart from "react-google-charts";
 import Register from "./main/auth/signup";
-import { LatLngExpression } from "leaflet";
-
-const data = [
-  ["Year", "$"],
-  ["2012", 1.5],
-  ["2013", 40],
-  ["2014", 20],
-  ["2015", 26],
-  ["2016", 27],
-  ["2017", 30],
-  ["2018", 30],
-  ["2019", 30],
-  ["2022", 30],
-];
-
-const position: LatLngExpression = [51.505, -0.09];
+import { isValid } from "../actions/util";
 
 export default function Main({
   economyInsight,
@@ -57,12 +41,25 @@ export default function Main({
 
   const [historicalGdp, setHistoricalGdp] = useState<[string, string][]>([]);
   const [historicalPop, setHistoricalPop] = useState<[string, string][]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const toast = useToast();
 
   async function getHistory() {
-    if (isAuthenticated || city !== "") {
-      const { gdp, population }: any = await getHistoricalInsights(
+    if (isAuthenticated && city !== "") {
+      setIsLoading(true);
+      const { gdp, population, error }: any = await getHistoricalInsights(
         economyInsight?.country
       );
+
+      if (isValid(error)) {
+        toast({
+          title: error,
+          status: "error",
+          isClosable: true,
+          position: "top",
+        });
+      }
 
       const gdpArray: [string, string][] = [["year", "GDP"]];
       let popArray: [string, string][] = [["year", "Population"]];
@@ -80,7 +77,15 @@ export default function Main({
         });
       }
       setHistoricalGdp(gdpArray);
+    } else {
+      toast({
+        title: "Please Login or sign up",
+        status: "error",
+        isClosable: true,
+        position: "top",
+      });
     }
+    setIsLoading(false);
   }
 
   const country = economyInsight?.country;
@@ -124,7 +129,7 @@ export default function Main({
                       <Flex>
                         <Box flex="1">
                           <Text color="black">
-                            Want to see Exchange Rates, please :
+                            Want to see Exchange Rates? Please :
                           </Text>
                         </Box>
 
@@ -177,6 +182,8 @@ export default function Main({
                       colorScheme="black"
                       ml={{ base: 0, md: "1rem" }}
                       size={{ base: "sm", md: "md" }}
+                      isLoading={isLoading}
+                      loadingText="Fetching..."
                       onClick={getHistory}
                     >
                       Fetch History
@@ -212,7 +219,7 @@ export default function Main({
                   <Flex>
                     <Box flex="1">
                       <Text color="black">
-                        Want to see weather forecast, please :
+                        Want to see Weather Forecast? Please :
                       </Text>
                     </Box>
 

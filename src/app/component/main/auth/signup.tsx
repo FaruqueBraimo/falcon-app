@@ -13,7 +13,10 @@ import {
   ModalFooter,
   InputGroup,
   InputRightElement,
+  Text,
 } from "@chakra-ui/react";
+import { ErrorMessage } from "@hookform/error-message";
+
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -22,14 +25,21 @@ export default function Register({ isOpen, onClose, onRegister }: any) {
   const finalRef = React.useRef(null);
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+
+  interface FormInputs {
+    username: string;
+    password: string;
+  }
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isSubmitting },
+  } = useForm<FormInputs>();
 
   const onSubmit = (data: any) => {
     onRegister(data);
+    onClose();
   };
 
   return (
@@ -48,7 +58,21 @@ export default function Register({ isOpen, onClose, onRegister }: any) {
             <ModalBody pb={6}>
               <FormControl mt={4}>
                 <FormLabel>Username</FormLabel>
-                <Input placeholder="Username" {...register("username")} />
+                <Input
+                  {...register("username", {
+                    required: "Username is required.",
+                  })}
+                />
+
+                <ErrorMessage
+                  errors={errors}
+                  name="username"
+                  render={({ message }) => (
+                    <Text as="sub" color="red">
+                      {message}
+                    </Text>
+                  )}
+                />
               </FormControl>
               <FormControl>
                 <FormLabel>Password</FormLabel>
@@ -58,20 +82,37 @@ export default function Register({ isOpen, onClose, onRegister }: any) {
                     pr="4.5rem"
                     type={show ? "text" : "password"}
                     placeholder="Enter password"
-                    {...register("password")}
+                    {...register("password", {
+                      required: "password is required",
+                    })}
                   />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleClick}>
                       {show ? "Hide" : "Show"}
                     </Button>
                   </InputRightElement>
+                  <ErrorMessage
+                    errors={errors}
+                    name="password"
+                    render={({ message }) => (
+                      <Text as="sub" color="red">
+                        {message}
+                      </Text>
+                    )}
+                  />
                 </InputGroup>
               </FormControl>
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="teal" mr={3} type="submit">
-                Login
+              <Button
+                colorScheme="teal"
+                mr={3}
+                type="submit"
+                isLoading={isSubmitting}
+                loadingText="Submitting"
+              >
+                Register
               </Button>
             </ModalFooter>
           </form>

@@ -2,12 +2,6 @@
 
 import {
   Box,
-  Flex,
-  Text,
-  SimpleGrid,
-  Tag,
-  StackDivider,
-  VStack,
   Tab,
   TabIndicator,
   TabList,

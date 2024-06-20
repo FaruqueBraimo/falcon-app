@@ -3,9 +3,13 @@
 import { Box, Flex, Button, Text, useDisclosure } from "@chakra-ui/react";
 import Search from "./header/search";
 import Login from "./main/auth/login";
-import { useContext, useEffect } from "react";
 
-export default function Header({ onSearch, onLogin, isAuthenticated }: any) {
+export default function Header({
+  onSearch,
+  onLogin,
+  isAuthenticated,
+  isSeaching,
+}: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -22,7 +26,7 @@ export default function Header({ onSearch, onLogin, isAuthenticated }: any) {
         <Text as="b">Falcon</Text>
       </Box>
 
-      <Search onSearch={onSearch} />
+      <Search onSearch={onSearch} isSeaching={isSeaching} />
 
       <Box>
         {!isAuthenticated && (

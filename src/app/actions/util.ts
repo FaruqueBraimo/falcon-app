@@ -53,4 +53,8 @@ const getDate = (date: string) => {
   var now = new Date(Number(date) * 1000);
   return `${now.toLocaleDateString("en-US")}`;
 };
-export { getDayTime, getExtensionAmount, getDate, getTime, getDay };
+
+const isValid = (val: any) => {
+  return val !== "" && val !== null && val !== undefined;
+};
+export { getDayTime, getExtensionAmount, getDate, getTime, getDay, isValid };
