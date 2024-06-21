@@ -7,7 +7,7 @@ const libraries = ["places", "drawing", "geometry"];
 
 export function MapProvider({ children }: { children: ReactNode }) {
   const { isLoaded: scriptLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAvF8E6Gfg-22d-PRDjldncladiQjCIKwE",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string,
     libraries: libraries as Libraries,
   });
 
