@@ -34,6 +34,20 @@ const getExtensionAmount = (value: string) => {
   return currentValue.toString();
 };
 
+const chartDataFormater = (value: string) => {
+  const currentValue = Number(value);
+  if (currentValue >= trillion) {
+    return (currentValue / trillion).toFixed(1) + "T";
+  } else if (currentValue >= billion) {
+    return (currentValue / billion).toFixed(1) + "B";
+  } else if (currentValue >= million) {
+    return (currentValue / million).toFixed(1) + "M";
+  } else if (currentValue > 1000) {
+    return (currentValue / 1000).toString() + "K";
+  }
+  return currentValue.toString();
+};
+
 const getDayTime = (date: string) => {
   var now = new Date(Number(date) * 1000);
   return `${weekday[now.getDay()]} ${now.getHours()}:${now.getMinutes()}`;
@@ -57,4 +71,12 @@ const getDate = (date: string) => {
 const isValid = (val: any) => {
   return val !== "" && val !== null && val !== undefined;
 };
-export { getDayTime, getExtensionAmount, getDate, getTime, getDay, isValid };
+export {
+  getDayTime,
+  getExtensionAmount,
+  getDate,
+  getTime,
+  getDay,
+  isValid,
+  chartDataFormater,
+};

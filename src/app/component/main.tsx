@@ -19,13 +19,35 @@ import {
   Tag,
   useDisclosure,
   useToast,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 import Exchange from "./main/exchange";
 import Wheather from "./main/weather";
 import { getHistoricalInsights } from "../actions/insight";
 import Chart from "react-google-charts";
 import Register from "./main/auth/signup";
-import { isValid } from "../actions/util";
+import { chartDataFormater, getDate, getDay, getTime, isValid } from "../actions/util";
+
+import {
+  LineChart,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
+
+
 
 export default function Main({
   economyInsight,
@@ -39,8 +61,8 @@ export default function Main({
 }: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [historicalGdp, setHistoricalGdp] = useState<[string, string][]>([]);
-  const [historicalPop, setHistoricalPop] = useState<[string, string][]>([]);
+  const [historicalGdp, setHistoricalGdp]: any = useState([]);
+  const [historicalPop, setHistoricalPop]: any = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const toast = useToast();
@@ -59,24 +81,10 @@ export default function Main({
           isClosable: true,
           position: "top",
         });
+      } else {
+        setHistoricalGdp(gdp);
+        setHistoricalPop(population);
       }
-
-      const gdpArray: [string, string][] = [["year", "GDP"]];
-      let popArray: [string, string][] = [["year", "Population"]];
-
-      if (population) {
-        population.forEach((entry: any) => {
-          popArray.push([entry.year.toString(), entry.value]);
-        });
-        setHistoricalPop(popArray);
-      }
-
-      if (gdp) {
-        gdp.forEach((entry: any) => {
-          gdpArray.push([entry.year.toString(), entry.value]);
-        });
-      }
-      setHistoricalGdp(gdpArray);
     } else {
       toast({
         title: "Please Login or sign up",
@@ -149,7 +157,7 @@ export default function Main({
                   </SimpleGrid>
                 </TabPanel>
                 <TabPanel width="100%" color="teal">
-                  {historicalPop?.length !== 0 ? (
+                  {Object.keys(historicalPop)?.length !== 0 ? (
                     <SimpleGrid
                       columns={{ base: 1, md: 2 }}
                       gap="1rem"
@@ -157,23 +165,64 @@ export default function Main({
                       width="100%"
                     >
                       <Box>
-                        <Text as="sub">GDP of {country} IN 10 Year</Text>
+                        <Box w={{ base: "100%", md: "100%" }}>
+                          <Text as="sub" p={3}>
+                            Population of {country} IN 10 Year
+                          </Text>
 
-                        <Chart
-                          chartType="Line"
-                          width="100%"
-                          height="50"
-                          data={historicalGdp}
-                        />
+                          <ResponsiveContainer
+                            width="100%"
+                            aspect={2}
+                            height="100%"
+                          >
+                            <LineChart
+                              width={500}
+                              height={300}
+                              data={historicalPop}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="year" />
+                              <YAxis tickFormatter={chartDataFormater} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey="value"
+                                stroke="#8884d8"
+                                activeDot={{ r: 8 }}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </Box>
                       </Box>
-                      <Box>
-                        <Text as="sub">Population of {country} IN 10 Year</Text>
-                        <Chart
-                          chartType="Line"
+                      <Box w={{ base: "100%", md: "100%" }}>
+                        <Text as="sub" mb="10">
+                          GDP of {country} IN 10 Year
+                        </Text>
+
+                        <ResponsiveContainer
                           width="100%"
-                          height="50rem"
-                          data={historicalPop}
-                        />
+                          aspect={2}
+                          height="100%"
+                        >
+                          <LineChart
+                            width={500}
+                            height={300}
+                            data={historicalGdp}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="year" />
+                            <YAxis tickFormatter={chartDataFormater} />
+                            <Tooltip />
+                            <Legend />
+                            <Line
+                              type="monotone"
+                              dataKey="value"
+                              stroke="#8884d8"
+                              activeDot={{ r: 8 }}
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
                       </Box>
                     </SimpleGrid>
                   ) : (
