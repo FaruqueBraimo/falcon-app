@@ -14,7 +14,7 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 # Back End
-Please install and run [https://github.com/FaruqueBraimo/falcon-app](https://github.com/FaruqueBraimo/falcon-app))  
+Please install and run [FALCON_API]([https://github.com/FaruqueBraimo/falcon-app](https://github.com/FaruqueBraimo/Falcon-API)))  
 
 # Usage
 
